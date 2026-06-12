@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل ادمین — قرضی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--primary:#143648;--accent:#f4a261;--text:#1f2937;--muted:#6b7280;--bg:#f8edd5;}
+body{font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px;}
+.login-box{max-width:360px;margin:80px auto;background:white;border-radius:24px;padding:36px;box-shadow:0 20px 60px rgba(20,54,72,.1);}
+.login-box h2{font-size:20px;font-weight:800;color:var(--primary);margin-bottom:20px;text-align:center;}
+input[type=password]{width:100%;padding:12px 16px;border:1.5px solid rgba(20,54,72,.15);border-radius:12px;font-family:inherit;font-size:14px;outline:none;margin-bottom:14px;}
+input[type=password]:focus{border-color:var(--primary);}
+button{width:100%;height:48px;background:var(--primary);color:white;border:none;border-radius:12px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;}
+button:hover{background:#0f2d44;}
+.panel{max-width:900px;margin:0 auto;}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+.header h1{font-size:22px;font-weight:800;color:var(--primary);}
+.stats{display:flex;gap:16px;margin-bottom:28px;flex-wrap:wrap;}
+.stat{background:white;border-radius:16px;padding:20px 24px;flex:1;min-width:140px;box-shadow:0 4px 16px rgba(20,54,72,.07);}
+.stat-num{font-size:32px;font-weight:900;color:var(--primary);}
+.stat-label{font-size:12px;color:var(--muted);margin-top:4px;}
+.table-wrap{background:white;border-radius:20px;overflow:hidden;box-shadow:0 4px 16px rgba(20,54,72,.07);}
+table{width:100%;border-collapse:collapse;}
+th{background:var(--primary);color:white;padding:14px 16px;font-size:13px;text-align:right;}
+td{padding:12px 16px;font-size:13px;border-bottom:1px solid rgba(20,54,72,.06);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(20,54,72,.02);}
+.logout{background:transparent;color:var(--muted);border:1.5px solid rgba(20,54,72,.15);width:auto;padding:8px 18px;height:auto;font-size:13px;border-radius:10px;}
+.logout:hover{background:rgba(20,54,72,.05);}
+.export-btn{background:var(--accent);color:white;border:none;border-radius:10px;padding:10px 18px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;margin-right:8px;}
+</style>
+</head>
+<body>
+
+<!-- لاگین -->
+<div class="login-box" id="loginBox">
+    <h2>🔐 پنل ادمین قرضی</h2>
+    <input type="password" id="passInput" placeholder="پسورد" onkeydown="if(event.key==='Enter')doLogin()">
+    <button onclick="doLogin()">ورود</button>
+</div>
+
+<!-- پنل -->
+<div class="panel" id="panel" style="display:none;">
+    <div class="header">
+        <h1>🤝 پنل ادمین قرضی</h1>
+        <div>
+            <button class="export-btn" onclick="exportCSV()">📥 خروجی CSV</button>
+            <button class="logout" onclick="logout()">خروج</button>
+        </div>
+    </div>
+    <div class="stats">
+        <div class="stat"><div class="stat-num" id="sTotal">—</div><div class="stat-label">کل ثبت‌نام</div></div>
+        <div class="stat"><div class="stat-num" id="sToday">—</div><div class="stat-label">امروز</div></div>
+        <div class="stat"><div class="stat-num" id="sMsgs">—</div><div class="stat-label">پیام دارن</div></div>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead><tr><th>#</th><th>نام</th><th>موبایل</th><th>پیام</th><th>تاریخ</th></tr></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const WORKER_URL = "https://gharzi-api.aref-ganjaee1.workers.dev"; // ← همینو عوض کن
+let currentPass = "";
+let allData = [];
+
+async function doLogin(){
+    const pass = document.getElementById('passInput').value;
+    if(!pass) return;
+    try{
+        const r = await fetch(`${WORKER_URL}/admin`, {
+            headers:{ 'X-Admin-Password': pass }
+        });
+        const d = await r.json();
+        if(d.success){
+            currentPass = pass;
+            allData = d.list;
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('panel').style.display = 'block';
+            renderPanel(d.list);
+        } else {
+            alert('پسورد اشتباهه!');
+        }
+    }catch(e){ alert('خطا در اتصال'); }
+}
+
+function renderPanel(list){
+    const today = new Date().toDateString();
+    document.getElementById('sTotal').textContent = list.length;
+    document.getElementById('sToday').textContent = list.filter(r=>new Date(r.date).toDateString()===today).length;
+    document.getElementById('sMsgs').textContent  = list.filter(r=>r.msg&&r.msg.trim()).length;
+
+    document.getElementById('tableBody').innerHTML = list.map((r,i)=>`
+        <tr>
+            <td style="color:var(--muted)">${list.length-i}</td>
+            <td><strong>${r.name}</strong></td>
+            <td dir="ltr">${r.phone}</td>
+            <td style="color:var(--muted)">${r.msg||'—'}</td>
+            <td style="color:var(--muted);font-size:11px;">${new Date(r.date).toLocaleString('fa-IR')}</td>
+        </tr>`).join('');
+}
+
+function exportCSV(){
+    const rows = [['نام','موبایل','پیام','تاریخ']];
+    allData.forEach(r=>rows.push([r.name, r.phone, r.msg||'', new Date(r.date).toLocaleString('fa-IR')]));
+    const csv = rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+    const blob = new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'gharzi-registrations.csv';
+    a.click();
+}
+
+function logout(){ currentPass=''; location.reload(); }
+</script>
+</body>
+</html>
