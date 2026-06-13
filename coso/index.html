@@ -3,7 +3,7 @@
 <head>
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#143648">
-    <link rel="apple-touch-icon" href="/assets/logo.svg">
+    <link rel="apple-touch-icon" href="/assets/logo.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>قرضی — به زودی</title>
@@ -83,7 +83,7 @@ body::after  { width:500px;height:500px; background:radial-gradient(circle,rgba(
 <div class="page">
     <div class="left">
         <div class="logo-row">
-            <img src="logo.png" style="height:150px;width:auto;">
+            <img src="/assets/logo.png" style="height:150px;width:auto;">
         </div>
         <p class="tagline">GHARZI.COM</p>
         <h1 class="headline">داریم<br><em>می‌آییم</em></h1>
@@ -219,6 +219,17 @@ setInterval(loadStats, 30000);
 <script>
   if('serviceWorker' in navigator)
     navigator.serviceWorker.register('/service-worker.js');
+</script>
+<div id="iosBanner" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#143648;color:white;padding:14px 20px;border-radius:16px;font-size:13px;text-align:center;z-index:999;max-width:300px;box-shadow:0 8px 24px rgba(0,0,0,0.2);">
+    برای نصب روی آیفون، روی <strong>􀈂</strong> بزن و <strong>«Add to Home Screen»</strong> رو انتخاب کن
+    <div onclick="document.getElementById('iosBanner').style.display='none'" style="margin-top:8px;opacity:.7;cursor:pointer;">متوجه شدم ✓</div>
+</div>
+<script>
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+if(isIOS && !isStandalone) {
+    setTimeout(()=> document.getElementById('iosBanner').style.display='block', 3000);
+}
 </script>
 </body>
 </html>
