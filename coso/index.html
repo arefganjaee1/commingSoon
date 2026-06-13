@@ -18,8 +18,8 @@ html,body { min-height:100vh; font-family:'Vazirmatn',sans-serif; background:var
 body::before,body::after { content:''; position:fixed; border-radius:50%; pointer-events:none; z-index:0; }
 body::before { width:600px;height:600px; background:radial-gradient(circle,rgba(20,54,72,.07) 0%,transparent 70%); top:-200px;left:-200px; }
 body::after  { width:500px;height:500px; background:radial-gradient(circle,rgba(244,162,97,.12) 0%,transparent 70%); bottom:-150px;right:-150px; }
-.page { position:relative;z-index:1;min-height:100vh;display:grid;grid-template-columns:1fr 1fr; }
-.left { display:flex;flex-direction:column;justify-content:center;padding:60px 56px 60px 40px; }
+.page { position:relative;z-index:1;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;direction:ltr; }
+.left { display:flex;flex-direction:column;justify-content:center;padding:60px 40px 60px 56px; }
 .logo-row { display:flex;align-items:center;gap:14px;margin-bottom:48px; }
 .logo-icon { width:52px;height:52px;background:var(--primary);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px; }
 .logo-text { font-size:28px;font-weight:900;color:var(--primary); }
@@ -34,7 +34,7 @@ body::after  { width:500px;height:500px; background:radial-gradient(circle,rgba(
 .counter-num { font-size:36px;font-weight:900;color:var(--primary);line-height:1;transition:.3s; }
 .counter-label { font-size:11px;color:var(--muted);font-weight:600;margin-top:4px; }
 .counter-divider { width:1px;background:rgba(20,54,72,.12);margin:4px 0; }
-.right { display:flex;align-items:center;justify-content:center;padding:60px 40px 60px 56px;background:rgba(20,54,72,.03);border-right:1px solid rgba(20,54,72,.08); }
+.right { display:flex;align-items:center;justify-content:center;padding:60px 56px 60px 40px;background:rgba(20,54,72,.03);border-left:1px solid rgba(20,54,72,.08); }
 .form-card { width:100%;max-width:420px;background:white;border-radius:28px;padding:36px 32px;box-shadow:0 20px 60px rgba(20,54,72,.1); }
 .form-title { font-size:20px;font-weight:800;color:var(--primary);margin-bottom:6px; }
 .form-sub { font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.6; }
@@ -221,7 +221,7 @@ setInterval(loadStats, 30000);
     navigator.serviceWorker.register('/service-worker.js');
 </script>
 <div id="iosBanner" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#143648;color:white;padding:14px 20px;border-radius:16px;font-size:13px;text-align:center;z-index:999;max-width:300px;box-shadow:0 8px 24px rgba(0,0,0,0.2);">
-    برای نصب روی آیفون، روی <strong>􀈂</strong> بزن و <strong>«Add to Home Screen»</strong> رو انتخاب کن
+    برای نصب روی آیفون، روی دکمه <strong>Share</strong> (⬆️) بزن و <strong>«Add to Home Screen»</strong> رو انتخاب کن
     <div onclick="document.getElementById('iosBanner').style.display='none'" style="margin-top:8px;opacity:.7;cursor:pointer;">متوجه شدم ✓</div>
 </div>
 <script>
