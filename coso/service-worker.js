@@ -1,4 +1,4 @@
-const CACHE = 'gharzi-v1';
+const CACHE = 'gharzi-v1.1';
 const ASSETS = [
     '/',
     '/index.html',
