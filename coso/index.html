@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#143648">
+    <link rel="apple-touch-icon" href="/assets/logo.svg">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>قرضی — به زودی</title>
@@ -212,6 +215,10 @@ async function submitForm(){
 
 loadStats();
 setInterval(loadStats, 30000);
+</script>
+<script>
+  if('serviceWorker' in navigator)
+    navigator.serviceWorker.register('/service-worker.js');
 </script>
 </body>
 </html>
