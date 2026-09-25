@@ -12,68 +12,63 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 :root {
-    --primary:#143648; --secondary:#f8edd5; --accent:#f4a261; --text:#1f2937; --muted:#6b7280;
+    --primary:#143648; --secondary:#f7f7f6; --accent:#f4a261; --text:#1f2937; --muted:#6b7280; --border:#e5e7eb;
 }
 html,body { min-height:100vh; font-family:'Vazirmatn',sans-serif; background:var(--secondary); color:var(--text); overflow-x:hidden; }
-body::before,body::after { content:''; position:fixed; border-radius:50%; pointer-events:none; z-index:0; }
-body::before { width:600px;height:600px; background:radial-gradient(circle,rgba(20,54,72,.07) 0%,transparent 70%); top:-200px;left:-200px; }
-body::after  { width:500px;height:500px; background:radial-gradient(circle,rgba(244,162,97,.12) 0%,transparent 70%); bottom:-150px;right:-150px; }
 .page { position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px; }
-.left { display:flex;flex-direction:column;align-items:center;text-align:right;width:100%;max-width:560px;margin-bottom:48px; }
-.logo-row { display:flex;align-items:center;gap:14px;margin-bottom:48px; }
-.logo-icon { width:52px;height:52px;background:var(--primary);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px; }
-.logo-text { font-size:28px;font-weight:900;color:var(--primary); }
+.left { display:flex;flex-direction:column;align-items:center;text-align:right;width:100%;max-width:560px;margin-bottom:48px; animation:fadeIn .4s ease both; }
+.logo-row { display:flex;align-items:center;gap:14px;margin-bottom:40px; }
+.logo-icon { width:52px;height:52px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px; }
+.logo-text { font-size:26px;font-weight:700;color:var(--primary); }
 .logo-text span { color:var(--accent); }
-.tagline { font-size:13px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px; }
-.headline { font-size:48px;font-weight:900;line-height:1.2;color:var(--primary);margin-bottom:20px; }
+.tagline { font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:16px; }
+.headline { font-size:42px;font-weight:800;line-height:1.25;color:var(--primary);margin-bottom:18px;letter-spacing:-0.5px; }
 .headline em { font-style:normal;color:var(--accent);position:relative; }
-.headline em::after { content:'';position:absolute;bottom:4px;right:0;left:0;height:4px;background:var(--accent);border-radius:2px;opacity:.3; }
-.subtext { font-size:16px;line-height:1.8;color:var(--muted);max-width:380px;margin-bottom:40px; }
-.counter-row { display:flex;gap:24px;margin-bottom:48px; }
+.headline em::after { content:'';position:absolute;bottom:2px;right:0;left:0;height:2px;background:var(--accent);border-radius:1px;opacity:.5; }
+.subtext { font-size:15px;line-height:1.8;color:var(--muted);max-width:380px;margin-bottom:36px; }
+.counter-row { display:flex;gap:24px;margin-bottom:40px; }
 .counter-item { text-align:center; }
-.counter-num { font-size:36px;font-weight:900;color:var(--primary);line-height:1;transition:.3s; }
+.counter-num { font-size:30px;font-weight:800;color:var(--primary);line-height:1;transition:.3s; }
 .counter-label { font-size:11px;color:var(--muted);font-weight:600;margin-top:4px; }
-.counter-divider { width:1px;background:rgba(20,54,72,.12);margin:4px 0; }
-.right { display:flex;align-items:center;justify-content:center;width:100%;max-width:560px; }
-.form-card { width:100%;max-width:420px;background:white;border-radius:28px;padding:36px 32px;box-shadow:0 20px 60px rgba(20,54,72,.1); }
-.form-title { font-size:20px;font-weight:800;color:var(--primary);margin-bottom:6px; }
-.form-sub { font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.6; }
+.counter-divider { width:1px;background:var(--border);margin:4px 0; }
+.right { display:flex;align-items:center;justify-content:center;width:100%;max-width:560px;border-right:1px solid var(--border);padding-right:56px; animation:fadeIn .4s ease .1s both; }
+.form-card { width:100%;max-width:420px;background:white;border:1px solid var(--border);border-radius:14px;padding:32px 30px;box-shadow:0 2px 8px rgba(20,54,72,.05); }
+.form-title { font-size:18px;font-weight:700;color:var(--primary);margin-bottom:6px; }
+.form-sub { font-size:13px;color:var(--muted);margin-bottom:26px;line-height:1.6; }
 .field { margin-bottom:16px; }
-.field label { display:block;font-size:12px;font-weight:700;color:var(--primary);margin-bottom:7px; }
-.field input,.field textarea { width:100%;padding:12px 16px;border:1.5px solid rgba(20,54,72,.12);border-radius:14px;font-family:inherit;font-size:14px;color:var(--text);background:#fafafa;transition:.2s;outline:none; }
-.field input:focus,.field textarea:focus { border-color:var(--primary);background:white;box-shadow:0 0 0 3px rgba(20,54,72,.08); }
+.field label { display:block;font-size:12px;font-weight:600;color:var(--primary);margin-bottom:7px; }
+.field input,.field textarea { width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;color:var(--text);background:#fafafa;transition:.2s;outline:none; }
+.field input:focus,.field textarea:focus { border-color:var(--primary);background:white;box-shadow:0 0 0 3px rgba(20,54,72,.07); }
 .field textarea { height:90px;resize:none;line-height:1.7; }
-.submit-btn { width:100%;height:52px;background:var(--primary);color:white;border:none;border-radius:16px;font-family:inherit;font-size:16px;font-weight:800;cursor:pointer;transition:.25s;margin-top:8px; }
-.submit-btn:hover { background:#0f2d44;transform:translateY(-2px);box-shadow:0 8px 24px rgba(20,54,72,.25); }
-.submit-btn:disabled { opacity:.6;cursor:default;transform:none; }
-.success-msg { display:none;text-align:center;padding:20px 0;animation:fadeIn .4s ease; }
-.success-msg .check { font-size:48px;margin-bottom:12px; }
-.success-msg h3 { font-size:18px;font-weight:800;color:var(--primary);margin-bottom:8px; }
+.submit-btn { width:100%;height:48px;background:var(--primary);color:white;border:none;border-radius:8px;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;transition:.2s;margin-top:8px; }
+.submit-btn:hover { background:#0f2d44; }
+.submit-btn:disabled { opacity:.6;cursor:default; }
+.success-msg { display:none;text-align:center;padding:20px 0; }
+.success-msg .check { margin-bottom:14px;display:flex;justify-content:center; }
+.success-msg h3 { font-size:17px;font-weight:700;color:var(--primary);margin-bottom:8px; }
 .success-msg p { font-size:13px;color:var(--muted);line-height:1.7; }
-.registrations { margin-top:28px;padding-top:24px;border-top:1px solid rgba(20,54,72,.08); }
+.registrations { margin-top:28px;padding-top:24px;border-top:1px solid var(--border); }
 .reg-title { font-size:12px;font-weight:700;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:6px; }
 .reg-list { display:flex;flex-direction:column;gap:8px;max-height:180px;overflow-y:auto; }
-.reg-item { display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(20,54,72,.03);border-radius:12px;animation:slideIn .3s ease; }
+.reg-item { display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:#fafafa;border:1px solid var(--border);border-radius:8px; }
 .reg-avatar { width:32px;height:32px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0; }
 .reg-info { flex:1;min-width:0; }
 .reg-name { font-size:13px;font-weight:700;color:var(--primary); }
 .reg-msg { font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .reg-time { font-size:10px;color:var(--muted);flex-shrink:0;margin-top:2px; }
 .footer { position:fixed;bottom:0;left:0;right:0;text-align:center;padding:14px;font-size:12px;color:var(--muted);z-index:1; }
-.footer a { color:var(--accent);text-decoration:none;font-weight:600; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-@keyframes slideIn { from{opacity:0;transform:translateX(-8px)} to{opacity:1;transform:translateX(0)} }
+.footer a { color:var(--primary);text-decoration:none;font-weight:600; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
 @keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
-.left > * { animation:fadeIn .5s ease both; }
-.left > *:nth-child(1){animation-delay:.1s} .left > *:nth-child(2){animation-delay:.2s}
-.left > *:nth-child(3){animation-delay:.3s} .left > *:nth-child(4){animation-delay:.35s}
-.left > *:nth-child(5){animation-delay:.4s} .left > *:nth-child(6){animation-delay:.45s}
-.form-card { animation:fadeIn .6s ease .2s both; }
+@media(min-width:769px){
+    .page{ flex-direction:row; gap:0; max-width:1100px; margin:0 auto; align-items:center; }
+    .left,.right{ margin-bottom:0; }
+}
 @media(max-width:768px){
     .left{padding:40px 24px 32px;order:1}
-    .right{padding:0 24px 40px;border-right:none;border-top:1px solid rgba(20,54,72,.08);order:2;background:transparent}
-    .headline{font-size:32px} .logo-row,.counter-row{margin-bottom:32px}
-    .form-card{border-radius:24px;padding:28px 24px;box-shadow:0 10px 30px rgba(20,54,72,.08)}
+    .right{padding:0 24px 40px;border-right:none;border-top:1px solid var(--border);order:2;background:transparent}
+    .headline{font-size:30px} .logo-row,.counter-row{margin-bottom:28px}
+    .form-card{border-radius:12px;padding:24px 20px}
     .footer{position:static;margin-top:20px;padding-bottom:24px}
 }
 </style>
@@ -107,7 +102,7 @@ body::after  { width:500px;height:500px; background:radial-gradient(circle,rgba(
     <div class="right">
         <div class="form-card">
             <div id="formSection">
-                <h2 class="form-title">اول باش 🎯</h2>
+                <h2 class="form-title">اول باش</h2>
                 <p class="form-sub">اطلاعاتت رو بذار تا از اولین نفرا باشی که خبر دار میشی.</p>
                 <div class="field">
                     <label>نام</label>
@@ -121,12 +116,12 @@ body::after  { width:500px;height:500px; background:radial-gradient(circle,rgba(
                     <label>پیام یا پیشنهاد (اختیاری)</label>
                     <textarea id="fMsg" placeholder="چی می‌خوای قرض بدی یا بگیری؟ هر چیزی..."></textarea>
                 </div>
-                <button class="submit-btn" id="submitBtn" onclick="submitForm()">ثبت می‌کنم ✓</button>
+                <button class="submit-btn" id="submitBtn" onclick="submitForm()">ثبت می‌کنم</button>
             </div>
             <div class="success-msg" id="successMsg">
-                <div class="check">🎉</div>
+                <div class="check"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="#143648" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg></div>
                 <h3>ثبت شدی!</h3>
-                <p>به محض راه‌اندازی از همه چیز باخبرت می‌کنیم.<br>ممنون که اولی هستی 🙏</p>
+                <p>به محض راه‌اندازی از همه چیز باخبرت می‌کنیم.<br>ممنون که اولی هستی.</p>
             </div>
         </div>
     </div>
@@ -204,11 +199,11 @@ async function submitForm(){
             loadStats();
         }else{
             alert(d.message);
-            btn.disabled=false; btn.textContent='ثبت می‌کنم ✓';
+            btn.disabled=false; btn.textContent='ثبت می‌کنم';
         }
     }catch(e){
         alert('خطا در اتصال');
-        btn.disabled=false; btn.textContent='ثبت می‌کنم ✓';
+        btn.disabled=false; btn.textContent='ثبت می‌کنم';
     }
 }
 
@@ -220,8 +215,8 @@ setInterval(loadStats, 30000);
     navigator.serviceWorker.register('/service-worker.js');
 </script>
 <div id="iosBanner" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#143648;color:white;padding:14px 20px;border-radius:16px;font-size:13px;text-align:center;z-index:999;max-width:300px;box-shadow:0 8px 24px rgba(0,0,0,0.2);">
-    برای نصب روی آیفون، روی دکمه <strong>Share</strong> (⬆️) بزن و <strong>«Add to Home Screen»</strong> رو انتخاب کن
-    <div onclick="document.getElementById('iosBanner').style.display='none'" style="margin-top:8px;opacity:.7;cursor:pointer;">متوجه شدم ✓</div>
+    برای نصب روی آیفون، روی دکمه <strong>Share</strong> بزن و <strong>«Add to Home Screen»</strong> رو انتخاب کن
+    <div onclick="document.getElementById('iosBanner').style.display='none'" style="margin-top:8px;opacity:.7;cursor:pointer;">متوجه شدم</div>
 </div>
 <script>
 const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
