@@ -1,9 +1,19 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/icon-512.png">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>قرضی — به زودی</title>
+<meta name="description" content="قرضی؛ اولین پلتفرم قرض و اجاره کالا در ایران. به‌زودی.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="قرضی — به‌زودی">
+<meta property="og:description" content="به‌جای خریدن، امانت بگیر. اولین پلتفرم قرض و اجاره کالا در ایران، به‌زودی.">
+<meta property="og:image" content="https://gharzi.com/assets/icon-512.png">
+<meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#143648">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,6 +37,7 @@ body{
   color:var(--ink);
   display:flex;align-items:center;justify-content:center;
   padding:24px;
+  padding-bottom:calc(24px + env(safe-area-inset-bottom, 0px));
   position:relative;
   overflow:hidden;
   background:#eef1f3;
@@ -63,8 +74,34 @@ body{
   background:linear-gradient(135deg, rgba(255,255,255,.45), rgba(255,255,255,0) 45%);
   pointer-events:none;
 }
+.glass::after{
+  /* نور متحرکی که موقع hover دنبال موس میاد (فقط دسکتاپ) */
+  content:'';
+  position:absolute; inset:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,0%), rgba(255,255,255,.4), transparent 55%);
+  opacity:0; transition:opacity .35s ease;
+  pointer-events:none;
+}
+.glass:hover::after{ opacity:1; }
 @keyframes rise{ from{opacity:0; transform:translateY(14px) scale(.98);} to{opacity:1; transform:translateY(0) scale(1);} }
 
+.app-icon{
+  position:relative;
+  width:72px;height:72px;margin:0 auto 18px;
+  border-radius:20px;
+  background:linear-gradient(160deg, rgba(255,255,255,.85), rgba(255,255,255,.45));
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:0 10px 24px rgba(20,54,72,.18), inset 0 1px 0 rgba(255,255,255,.8);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.app-icon img{ width:60%; height:60%; object-fit:contain; position:relative; z-index:1; }
+.app-icon::after{
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(255,255,255,.6), rgba(255,255,255,0) 50%);
+  pointer-events:none;
+}
 .eyebrow{ position:relative; font-size:12px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:22px; }
 h1{
   position:relative;
@@ -97,10 +134,22 @@ button{
   color:#fff; font-family:inherit; font-size:15px; font-weight:700;
   cursor:pointer; transition:filter .2s ease, transform .15s ease;
   box-shadow:0 10px 24px rgba(20,54,72,.28), inset 0 1px 0 rgba(255,255,255,.25);
+  display:flex; align-items:center; justify-content:center;
 }
 button:hover{ filter:brightness(1.08); }
 button:active{ transform:scale(.98); }
 button:disabled{ opacity:.5; cursor:default; }
+.btn-spinner{
+  display:none;
+  width:18px;height:18px;
+  border:2px solid rgba(255,255,255,.35);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+button.loading .btn-text{ display:none; }
+button.loading .btn-spinner{ display:inline-block; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
 
 .note{ position:relative; font-size:12px; color:var(--muted); margin-top:18px; line-height:1.7; }
 .success{ display:none; position:relative; text-align:center; }
@@ -132,6 +181,15 @@ button:disabled{ opacity:.5; cursor:default; }
   }
   input::placeholder{ color:rgba(255,255,255,.35); }
 }
+/* ===== احترام به تنظیم «کاهش حرکت» گوشی/سیستم‌عامل ===== */
+@media(prefers-reduced-motion:reduce){
+  .blob{ animation:none; }
+  .glass{ animation:none; }
+  .btn-spinner{ animation:none; }
+}
+.error-msg{ display:none; position:relative; font-size:12px; color:#d64545; margin-top:14px; line-height:1.6; }
+.waitlist-count{ display:none; position:relative; font-size:12px; color:var(--muted); margin-top:16px; }
+.sr-only{ position:absolute; width:1px;height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 </style>
 </head>
 <body>
@@ -144,13 +202,22 @@ button:disabled{ opacity:.5; cursor:default; }
 <div class="wrap">
   <div class="glass">
     <div id="formView">
+      <div class="app-icon"><img src="assets/icon-192.png" alt="قرضی"></div>
       <p class="eyebrow">قرضی</p>
       <h1>به‌جای خریدن،<br><span>امانت بگیر</span></h1>
       <p class="sub">به‌زودی. اول به تو خبر می‌دیم.</p>
-      <div class="field">
-        <input type="tel" id="fPhone" placeholder="شماره موبایل" maxlength="11" dir="ltr">
-      </div>
-      <button id="submitBtn" onclick="submitForm()">خبرم کن</button>
+      <form id="waitForm" onsubmit="event.preventDefault(); submitForm(); return false;">
+        <div class="field">
+          <label class="sr-only" for="fPhone">شماره موبایل</label>
+          <input type="tel" id="fPhone" placeholder="شماره موبایل" maxlength="11" dir="ltr" autocomplete="tel">
+        </div>
+        <button type="submit" id="submitBtn">
+          <span class="btn-text">خبرم کن</span>
+          <span class="btn-spinner" aria-hidden="true"></span>
+        </button>
+        <p class="error-msg" id="errorMsg"></p>
+        <p class="waitlist-count" id="waitlistCount"></p>
+      </form>
           </div>
     <div class="success" id="successView">
       <div class="ring">
@@ -169,11 +236,22 @@ function shake(id){
   e.style.borderColor='#ff3b30';
   e.focus();
 }
+function showError(msg){
+  const el=document.getElementById('errorMsg');
+  if(!el) return;
+  el.textContent=msg;
+  el.style.display='block';
+}
+function hideError(){
+  const el=document.getElementById('errorMsg');
+  if(el) el.style.display='none';
+}
 async function submitForm(){
+  hideError();
   const phone=document.getElementById('fPhone').value.trim();
   if(!phone||!/^09\d{9}$/.test(phone)){ shake('fPhone'); return; }
   const btn=document.getElementById('submitBtn');
-  btn.disabled=true; btn.textContent='...';
+  btn.disabled=true; btn.classList.add('loading');
   try{
     const r=await fetch(`${WORKER_URL}/register`,{
       method:'POST',
@@ -185,12 +263,45 @@ async function submitForm(){
       document.getElementById('formView').style.display='none';
       document.getElementById('successView').style.display='block';
     }else{
-      btn.disabled=false; btn.textContent='خبرم کن';
+      showError(d.message || 'مشکلی پیش اومد، دوباره امتحان کن.');
+      btn.disabled=false; btn.classList.remove('loading');
     }
   }catch(e){
-    btn.disabled=false; btn.textContent='خبرم کن';
+    showError('اتصال برقرار نشد. دوباره امتحان کن.');
+    btn.disabled=false; btn.classList.remove('loading');
   }
 }
+
+async function loadWaitlistCount(){
+  try{
+    const r = await fetch(`${WORKER_URL}/stats`);
+    const d = await r.json();
+    const el = document.getElementById('waitlistCount');
+    if(!el || !d || !d.total) return;
+    el.textContent = `تا الان ${d.total.toLocaleString('fa-IR')} نفر منتظرن`;
+    el.style.display = 'block';
+  }catch(e){}
+}
+loadWaitlistCount();
+
+// نور شیشه‌ای که موقع hover دنبال موس میاد — فقط رو دستگاه‌هایی که موس/hover واقعی دارن
+(function(){
+  const glassEl = document.querySelector('.glass');
+  if(!glassEl) return;
+  if(!window.matchMedia || !window.matchMedia('(hover:hover) and (pointer:fine)').matches) return;
+  glassEl.addEventListener('mousemove', function(e){
+    const rect = glassEl.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    glassEl.style.setProperty('--mx', x + '%');
+    glassEl.style.setProperty('--my', y + '%');
+  });
+})();
+</script>
+<script>
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('/service-worker.js');
+  }
 </script>
 </body>
 </html>
