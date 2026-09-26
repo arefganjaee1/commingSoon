@@ -11,7 +11,7 @@
 <meta name="description" content="قرضی؛ اولین پلتفرم قرض و اجاره کالا در ایران. به‌زودی.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="قرضی — به‌زودی">
-<meta property="og:description" content="به‌جای خریدن، امانت بگیر. اولین پلتفرم قرض و اجاره کالا در ایران، به‌زودی.">
+<meta property="og:description" content="به‌جای خریدن، قرض بگیر. اولین پلتفرم قرض و اجاره کالا در ایران، به‌زودی.">
 <meta property="og:image" content="https://gharzi.com/assets/icon-512.png">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#143648">
@@ -40,7 +40,7 @@ body{
   padding-bottom:calc(24px + env(safe-area-inset-bottom, 0px));
   position:relative;
   overflow:hidden;
-  background:#eef1f3;
+  background:#f8edd5;
 }
 /* ===== لایه‌ی پس‌زمینه‌ی رنگی که شیشه ازش نور می‌گیره ===== */
 .bg{ position:fixed; inset:0; z-index:0; overflow:hidden; }
@@ -204,9 +204,13 @@ button.loading .btn-spinner{ display:inline-block; }
     <div id="formView">
       <div class="app-icon"><img src="assets/icon-192.png" alt="قرضی"></div>
       <p class="eyebrow">قرضی</p>
-      <h1>به‌جای خریدن،<br><span>امانت بگیر</span></h1>
+      <h1>به‌جای خریدن،<br><span>قرض بگیر</span></h1>
       <p class="sub">به‌زودی. اول به تو خبر می‌دیم.</p>
       <form id="waitForm" onsubmit="event.preventDefault(); submitForm(); return false;">
+        <div class="field">
+          <label class="sr-only" for="fName">اسم</label>
+          <input type="text" id="fName" placeholder="نام" autocomplete="name">
+        </div>
         <div class="field">
           <label class="sr-only" for="fPhone">شماره موبایل</label>
           <input type="tel" id="fPhone" placeholder="شماره موبایل" maxlength="11" dir="ltr" autocomplete="tel">
@@ -248,7 +252,9 @@ function hideError(){
 }
 async function submitForm(){
   hideError();
+  const name=document.getElementById('fName').value.trim();
   const phone=document.getElementById('fPhone').value.trim();
+  if(!name){ shake('fName'); return; }
   if(!phone||!/^09\d{9}$/.test(phone)){ shake('fPhone'); return; }
   const btn=document.getElementById('submitBtn');
   btn.disabled=true; btn.classList.add('loading');
@@ -256,7 +262,7 @@ async function submitForm(){
     const r=await fetch(`${WORKER_URL}/register`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name:'', phone, msg:''})
+      body:JSON.stringify({name, phone, msg:''})
     });
     const d=await r.json();
     if(d.success){
